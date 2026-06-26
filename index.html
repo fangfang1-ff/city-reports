@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>城市运营报告</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            padding: 20px 32px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .header-title {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+        .header-sub {
+            color: rgba(255,255,255,0.6);
+            font-size: 12px;
+            margin-bottom: 16px;
+        }
+        .tabs {
+            display: flex;
+            gap: 4px;
+        }
+        .tab {
+            padding: 10px 20px;
+            color: rgba(255,255,255,0.65);
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .tab:hover {
+            color: rgba(255,255,255,0.9);
+            background: rgba(255,255,255,0.08);
+        }
+        .tab.active {
+            color: #1a1a2e;
+            background: #f0f2f5;
+            font-weight: 600;
+        }
+        .content {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+        .content iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 16px;
+        }
+        .placeholder-inner {
+            text-align: center;
+        }
+        .placeholder-inner .icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        .placeholder-inner p {
+            margin-top: 8px;
+            color: #bbb;
+            font-size: 13px;
+        }
+        @media (max-width: 768px) {
+            .header { padding: 16px 16px 0; }
+            .header-title { font-size: 17px; }
+            .tab { padding: 8px 12px; font-size: 13px; }
+            .tabs { gap: 2px; overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-title">📊 城市运营报告中心</div>
+        <div class="header-sub">fangfang1-ff · 持续更新中</div>
+        <div class="tabs" id="tabs">
+            <button class="tab active" data-page="market-analysis.html">市场分析</button>
+            <button class="tab" data-page="data-analysis.html">数据分析</button>
+            <button class="tab" data-page="competitor-analysis.html">竞品分析</button>
+            <button class="tab" data-page="key-client.html">大客户分析</button>
+            <button class="tab" data-page="special-project.html">专项分析</button>
+        </div>
+    </div>
+    <div class="content" id="content">
+        <div class="placeholder">
+            <div class="placeholder-inner">
+                <div class="icon">📈</div>
+                <div>点击上方 Tab 查看各板块报告</div>
+                <p>各板块由不同项目独立产出，在此统一展示</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab');
+        const content = document.getElementById('content');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const page = tab.getAttribute('data-page');
+                content.innerHTML = `<iframe src="${page}" title="${tab.textContent}"></iframe>`;
+            });
+        });
+    </script>
+</body>
+</html>
