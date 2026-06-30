@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>苏州沙漠化商圈分析报告</title>
+<script src="https://registry.npmmirror.com/echarts/5.4.3/files/dist/echarts.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Microsoft YaHei',sans-serif;background:#f5f7fa;color:#333;line-height:1.6}
+.header{background:linear-gradient(135deg,#1e3a5f 0%,#4a6fa5 50%,#6b8cce 100%);color:#fff;padding:36px 40px 28px}
+.header h1{font-size:26px;font-weight:700;letter-spacing:1px}
+.header .sub{font-size:13px;opacity:.75;margin-top:6px}
+.container{max-width:1400px;margin:0 auto;padding:24px 20px 40px}
+.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
+.card{background:#fff;border-radius:10px;padding:20px 24px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.card .label{font-size:12px;color:#888;margin-bottom:4px}
+.card .val{font-size:28px;font-weight:700;color:#1e3a5f}
+.card .delta{font-size:13px;margin-top:4px}
+.card .delta.up{color:#2d9f2d}
+.card .delta.down{color:#e63946}
+.card .sub-row{display:flex;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid #f0f0f0;font-size:12px;color:#666}
+.section{background:#fff;border-radius:10px;padding:24px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.section h2{font-size:16px;color:#1e3a5f;border-left:4px solid #4a6fa5;padding-left:10px;margin-bottom:16px}
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.chart-box{height:460px}
+.chart-full{height:440px}
+.findings{background:linear-gradient(135deg,#f8f9fc,#eef1f7);border-radius:10px;padding:20px 24px;margin-bottom:20px}
+.findings h2{font-size:16px;color:#1e3a5f;margin-bottom:12px}
+.findings ul{list-style:none;padding:0}
+.findings li{padding:6px 0;font-size:14px;color:#444;position:relative;padding-left:20px}
+.findings li::before{content:'';position:absolute;left:0;top:12px;width:8px;height:8px;border-radius:50%}
+.findings li.good::before{background:#2d9f2d}
+.findings li.bad::before{background:#e63946}
+.findings li.warn::before{background:#f5a623}
+.findings li.info::before{background:#4a6fa5}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead th{background:#1e3a5f;color:#fff;padding:8px 6px;text-align:center;position:sticky;top:0;white-space:nowrap}
+tbody td{padding:7px 6px;text-align:center;border-bottom:1px solid #eee;white-space:nowrap}
+tbody tr:nth-child(even){background:#f8f9fc}
+tbody tr:hover{background:#e8edf5}
+.up-val{color:#2d9f2d;font-weight:600}
+.down-val{color:#e63946;font-weight:600}
+.zero-val{color:#999}
+.sales-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.sales-card{background:#f8f9fc;border-radius:8px;padding:16px}
+.sales-card h3{font-size:14px;color:#1e3a5f;margin-bottom:10px}
+.sales-item{display:flex;justify-content:space-between;padding:4px 0;font-size:13px}
+.sales-item .s-label{color:#666}
+.sales-item .s-val{font-weight:600;color:#333}
+.nav-dots{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:100;display:flex;flex-direction:column;gap:8px}
+.nav-dot{width:10px;height:10px;border-radius:50%;background:#ccc;cursor:pointer;transition:all .3s}
+.nav-dot.active{background:#4a6fa5;transform:scale(1.3)}
+
+.dept-table-wrap{overflow-x:auto;margin-top:8px}
+.dept-table{width:100%;border-collapse:collapse;font-size:13px}
+.dept-table th{background:#1e3a5f;color:#fff;padding:10px 8px;text-align:center;font-weight:500;white-space:nowrap}
+.dept-table td{padding:8px;text-align:center;border-bottom:1px solid #e8eaf0}
+.dept-table tr:nth-child(even){background:#f8f9fc}
+.dept-table tr:hover{background:#e8edf5}
+.dept-table .total-row{background:#eef2f9;font-weight:600}
+.dept-table .total-row:hover{background:#e0e7f2}
+@media(max-width:900px){.chart-row{grid-template-columns:1fr}.card-grid{grid-template-columns:1fr 1fr}.sales-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📊 苏州沙漠化商圈分析报告</h1>
+  <div class="sub">数据周期：5月末 → 6月最新 ｜ 34个沙漠化商圈 + 售卖汇总（6.1-6.25）</div>
+</div>
+<div class="container">
+
+<div class="card-grid" id="sec-overview">
+  <div class="card">
+    <div class="label">34商圈 经纪人数</div>
+    <div class="val">3,140</div>
+    <div class="delta up">↑ 46 vs 5月末</div>
+    <div class="sub-row"><span>5月末：3,094</span><span>苏州全域：18,792</span></div>
+  </div>
+  <div class="card">
+    <div class="label">34商圈 合作人数</div>
+    <div class="val">712</div>
+    <div class="delta up">↑ 88 vs 5月末</div>
+    <div class="sub-row"><span>5月末：624</span><span>苏州全域：6,721</span></div>
+  </div>
+  <div class="card">
+    <div class="label">34商圈 开发率</div>
+    <div class="val">22.68%</div>
+    <div class="delta up">↑ +2.51pp vs 5月末</div>
+    <div class="sub-row"><span>5月末：20.17%</span><span>苏州全域：35.77%</span></div>
+  </div>
+  <div class="card">
+    <div class="label">34商圈 SKU日均</div>
+    <div class="val">6,533.5</div>
+    <div class="delta up">↑ 355.0 vs 5月</div>
+    <div class="sub-row"><span>5月日均：6,178.5</span><span>环比 +5.7%</span></div>
+  </div>
+  <div class="card">
+    <div class="label">34商圈 VPPV日均</div>
+    <div class="val">16,261.4</div>
+    <div class="delta down">↓ 656.4 vs 5月</div>
+    <div class="sub-row"><span>5月日均：16,917.8</span><span>环比 -3.9%</span></div>
+  </div>
+  <div class="card">
+    <div class="label">34商圈 连接日均</div>
+    <div class="val">305.7</div>
+    <div class="delta down">↓ 40.5 vs 5月</div>
+    <div class="sub-row"><span>5月日均：346.2</span><span>环比 -11.7%</span></div>
+  </div>
+</div>
+
+
+<div class="section" id="sec-dept">
+  <h2>🏢 各部门售卖汇总（6月1日-25日）</h2>
+  <div class="dept-table-wrap">
+    <table class="dept-table">
+      <thead>
+        <tr>
+          <th>部门</th>
+          <th>总提单数</th>
+          <th>598元/季</th>
+          <th>1元/季</th>
+          <th>我爱</th>
+          <th>其他</th>
+          <th>转化<br>常规会员</th>
+          <th>常规端口<br>断续</th>
+          <th>合作中<br>(服务已开始)</th>
+          <th>合作中<br>(服务未开始)</th>
+          <th>到期<br>未续</th>
+          <th>流失</th>
+          <th>冬眠</th>
+          <th>未合作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align:left;font-weight:500">二手房一部</td>
+          <td>39</td><td>36</td><td>3</td>
+          <td>36</td><td>3</td>
+          <td>1</td><td>3</td>
+          <td>7</td><td>0</td>
+          <td>2</td><td>5</td>
+          <td>18</td><td>7</td>
+        </tr>
+        <tr>
+          <td style="text-align:left;font-weight:500">二手房二部</td>
+          <td>18</td><td>16</td><td>2</td>
+          <td>11</td><td>7</td>
+          <td>0</td><td>2</td>
+          <td>0</td><td>0</td>
+          <td>2</td><td>3</td>
+          <td>10</td><td>3</td>
+        </tr>
+        <tr>
+          <td style="text-align:left;font-weight:500">二手房三部</td>
+          <td>41</td><td>38</td><td>3</td>
+          <td>29</td><td>12</td>
+          <td>0</td><td>8</td>
+          <td>9</td><td>0</td>
+          <td>6</td><td>6</td>
+          <td>11</td><td>9</td>
+        </tr>
+        <tr>
+          <td style="text-align:left;font-weight:500">二手房五部</td>
+          <td>89</td><td>82</td><td>7</td>
+          <td>62</td><td>27</td>
+          <td>0</td><td>7</td>
+          <td>10</td><td>0</td>
+          <td>5</td><td>19</td>
+          <td>43</td><td>12</td>
+        </tr>
+        <tr>
+          <td style="text-align:left;font-weight:500">苏州商业部</td>
+          <td>39</td><td>39</td><td>0</td>
+          <td>28</td><td>11</td>
+          <td>0</td><td>8</td>
+          <td>13</td><td>0</td>
+          <td>3</td><td>9</td>
+          <td>10</td><td>4</td>
+        </tr>
+        <tr class="total-row">
+          <td style="text-align:left">苏州总计</td>
+          <td>226</td><td>211</td><td>15</td>
+          <td>166</td><td>60</td>
+          <td>1</td><td>28</td>
+          <td>39</td><td>0</td>
+          <td>18</td><td>42</td>
+          <td>92</td><td>35</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="findings" id="sec-findings">
+  <h2>🔍 关键发现</h2>
+  <ul>
+    <li class="good">沙漠化商圈逆势增长：34商圈合作人数+88（+14.1%）、开发率+2.51pp、SKU+355.0，显著优于苏州全域（合作人数-155、开发率-0.45pp）</li>
+    <li class="warn">连接指标全面承压：34个商圈中20个连接数下降，震泽-54.8%、平江路-50.4%、桃源-47.6%降幅最大</li>
+    <li class="info">售卖端：6月1-25日共售卖226单，598元/季产品211单、1元/季产品15单；主要面向我爱我家（166单，占73.5%）</li>
+    <li class="warn">售卖客户结构：流失+冬眠客户占比59.3%（42+92单），存续性待验证</li>
+    <li class="warn">5个零开发商圈（东山、独墅湖西、虎丘城区、平江路、桃花坞）仍无突破</li>
+  </ul>
+</div>
+
+<div class="section" id="sec-charts1">
+  <h2>核心指标环比变化</h2>
+  <div class="chart-row">
+    <div class="chart-box" id="chart-devrate"></div>
+    <div class="chart-box" id="chart-coop"></div>
+  </div>
+</div>
+
+<div class="section" id="sec-charts2">
+  <h2>效果指标环比变化</h2>
+  <div class="chart-row">
+    <div class="chart-box" id="chart-sku"></div>
+    <div class="chart-box" id="chart-vppv"></div>
+  </div>
+</div>
+
+<div class="section" id="sec-table">
+  <h2>34个沙漠化商圈明细数据</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>商圈</th><th>区域</th><th>责任部门</th>
+          <th>经纪人数<br>(5月末)</th><th>经纪人数<br>(最新)</th><th>经纪人<br>环比</th>
+          <th>合作人数<br>(5月末)</th><th>合作人数<br>(最新)</th><th>合作人<br>环比</th>
+          <th>开发率<br>(5月末)</th><th>开发率<br>(最新)</th><th>开发率<br>环比</th>
+          <th>SKU日均<br>(5月)</th><th>SKU日均<br>(6月)</th><th>SKU<br>环比%</th>
+          <th>VPPV日均<br>(5月)</th><th>VPPV日均<br>(6月)</th><th>VPPV<br>环比%</th>
+          <th>连接日均<br>(5月)</th><th>连接日均<br>(6月)</th><th>连接<br>环比%</th>
+        </tr>
+      </thead>
+      <tbody>
+<tr>
+      <td><b>东山</b></td><td>吴中区</td><td>二手房三部</td>
+      <td>9</td><td>9</td>
+      <td class="zero-val">0</td>
+      <td>0</td><td>0</td>
+      <td class="zero-val">0</td>
+      <td>0.0%</td><td>0.0%</td>
+      <td class="zero-val">+0.0pp</td>
+      <td>22.8</td><td>28.4</td>
+      <td class="up-val">+24.5pp</td>
+      <td>107.5</td><td>114.6</td>
+      <td class="up-val">+6.6pp</td>
+      <td>2.2</td><td>2.1</td>
+      <td class="down-val">-5.2pp</td>
+    </tr>
+<tr>
+      <td><b>独墅湖西</b></td><td>吴中区</td><td>二手房五部</td>
+      <td>22</td><td>22</td>
+      <td class="zero-val">0</td>
+      <td>0</td><td>0</td>
+      <td class="zero-val">0</td>
+      <td>0.0%</td><td>0.0%</td>
+      <td class="zero-val">+0.0pp</td>
+      <td>76.2</td><td>87.5</td>
+      <td class="up-val">+14.8pp</td>
+      <td>174.5</td><td>170.4</td>
+      <td class="down-val">-2.4pp</td>
+      <td>3.7</td><td>3.0</td>
+      <td class="down-val">-20.9pp</td>
+    </tr>
+<tr>
+      <td><b>临湖镇</b></td><td>吴中区</td><td>二手房三部</td>
+      <td>95</td><td>123</td>
+      <td class="up-val">+28</td>
+      <td>18</td><td>40</td>
+      <td class="up-val">+22</td>
+      <td>18.9%</td><td>32.5%</td>
+      <td class="up-val">+13.6pp</td>
+      <td>183.6</td><td>170.0</td>
+      <td class="down-val">-7.4pp</td>
+      <td>474.4</td><td>412.9</td>
+      <td class="down-val">-13.0pp</td>
+      <td>9.0</td><td>6.1</td>
+      <td class="down-val">-32.7pp</td>
+    </tr>
+<tr>
+      <td><b>龙西</b></td><td>吴中区</td><td>二手房三部</td>
+      <td>147</td><td>157</td>
+      <td class="up-val">+10</td>
+      <td>43</td><td>48</td>
+      <td class="up-val">+5</td>
+      <td>29.3%</td><td>30.6%</td>
+      <td class="up-val">+1.3pp</td>
+      <td>104.7</td><td>120.4</td>
+      <td class="up-val">+15.0pp</td>
+      <td>288.6</td><td>302.6</td>
+      <td class="up-val">+4.8pp</td>
+      <td>6.8</td><td>7.0</td>
+      <td class="up-val">+2.9pp</td>
+    </tr>
+<tr>
+      <td><b>黄桥</b></td><td>相城区</td><td>二手房二部</td>
+      <td>30</td><td>30</td>
+      <td class="zero-val">0</td>
+      <td>2</td><td>6</td>
+      <td class="up-val">+4</td>
+      <td>6.7%</td><td>20.0%</td>
+      <td class="up-val">+13.3pp</td>
+      <td>222.1</td><td>245.9</td>
+      <td class="up-val">+10.7pp</td>
+      <td>495.7</td><td>554.1</td>
+      <td class="up-val">+11.8pp</td>
+      <td>12.5</td><td>12.6</td>
+      <td class="up-val">+0.7pp</td>
+    </tr>
+<tr>
+      <td><b>常熟老街</b></td><td>常熟</td><td>二手房六部</td>
+      <td>26</td><td>18</td>
+      <td class="down-val">-8</td>
+      <td>12</td><td>9</td>
+      <td class="down-val">-3</td>
+      <td>46.2%</td><td>50.0%</td>
+      <td class="up-val">+3.9pp</td>
+      <td>195.6</td><td>199.2</td>
+      <td class="up-val">+1.8pp</td>
+      <td>630.7</td><td>719.8</td>
+      <td class="up-val">+14.1pp</td>
+      <td>14.6</td><td>14.8</td>
+      <td class="up-val">+1.0pp</td>
+    </tr>
+<tr>
+      <td><b>梅李</b></td><td>常熟</td><td>二手房六部</td>
+      <td>15</td><td>15</td>
+      <td class="zero-val">0</td>
+      <td>5</td><td>1</td>
+      <td class="down-val">-4</td>
+      <td>33.3%</td><td>6.7%</td>
+      <td class="down-val">-26.7pp</td>
+      <td>36.7</td><td>39.8</td>
+      <td class="up-val">+8.4pp</td>
+      <td>99.0</td><td>91.2</td>
+      <td class="down-val">-7.9pp</td>
+      <td>2.3</td><td>1.7</td>
+      <td class="down-val">-25.6pp</td>
+    </tr>
+<tr>
+      <td><b>平望</b></td><td>吴江</td><td>二手房三部</td>
+      <td>13</td><td>12</td>
+      <td class="down-val">-1</td>
+      <td>4</td><td>4</td>
+      <td class="zero-val">0</td>
+      <td>30.8%</td><td>33.3%</td>
+      <td class="up-val">+2.6pp</td>
+      <td>104.0</td><td>109</td>
+      <td class="up-val">+4.8pp</td>
+      <td>205.4</td><td>192.8</td>
+      <td class="down-val">-6.1pp</td>
+      <td>3.2</td><td>3.7</td>
+      <td class="up-val">+15.3pp</td>
+    </tr>
+<tr>
+      <td><b>桃源</b></td><td>吴江</td><td>二手房三部</td>
+      <td>15</td><td>15</td>
+      <td class="zero-val">0</td>
+      <td>2</td><td>2</td>
+      <td class="zero-val">0</td>
+      <td>13.3%</td><td>13.3%</td>
+      <td class="zero-val">+0.0pp</td>
+      <td>44.6</td><td>45.0</td>
+      <td class="up-val">+1.0pp</td>
+      <td>64.6</td><td>48.6</td>
+      <td class="down-val">-24.8pp</td>
+      <td>1.5</td><td>0.8</td>
+      <td class="down-val">-47.6pp</td>
+    </tr>
+<tr>
+      <td><b>同里</b></td><td>吴江</td><td>二手房三部</td>
+      <td>45</td><td>40</td>
+      <td class="down-val">-5</td>
+      <td>6</td><td>6</td>
+      <td class="zero-val">0</td>
+      <td>13.3%</td><td>15.0%</td>
+      <td class="up-val">+1.7pp</td>
+      <td>148.9</td><td>149.2</td>
+      <td class="up-val">+0.2pp</td>
+      <td>379.9</td><td>352.0</td>
+      <td class="down-val">-7.3pp</td>
+      <td>6.5</td><td>4.6</td>
+      <td class="down-val">-29.1pp</td>
+    </tr>
+<tr>
+      <td><b>震泽</b></td><td>吴江</td><td>二手房三部</td>
+      <td>14</td><td>17</td>
+      <td class="up-val">+3</td>
+      <td>6</td><td>4</td>
+      <td class="down-val">-2</td>
+      <td>42.9%</td><td>23.5%</td>
+      <td class="down-val">-19.3pp</td>
+      <td>68.5</td><td>61.5</td>
+      <td class="down-val">-10.2pp</td>
+      <td>126.1</td><td>102.0</td>
+      <td class="down-val">-19.1pp</td>
+      <td>3.1</td><td>1.4</td>
+      <td class="down-val">-54.8pp</td>
+    </tr>
+<tr>
+      <td><b>东环</b></td><td>工业园区</td><td>二手房五部</td>
+      <td>229</td><td>224</td>
+      <td class="down-val">-5</td>
+      <td>67</td><td>78</td>
+      <td class="up-val">+11</td>
+      <td>29.3%</td><td>34.8%</td>
+      <td class="up-val">+5.6pp</td>
+      <td>188.4</td><td>214.4</td>
+      <td class="up-val">+13.8pp</td>
+      <td>566.8</td><td>588.2</td>
+      <td class="up-val">+3.8pp</td>
+      <td>9.6</td><td>11</td>
+      <td class="up-val">+14.4pp</td>
+    </tr>
+<tr>
+      <td><b>东沙湖</b></td><td>工业园区</td><td>二手房五部</td>
+      <td>159</td><td>158</td>
+      <td class="down-val">-1</td>
+      <td>21</td><td>21</td>
+      <td class="zero-val">0</td>
+      <td>13.2%</td><td>13.3%</td>
+      <td class="up-val">+0.1pp</td>
+      <td>252.6</td><td>295</td>
+      <td class="up-val">+16.8pp</td>
+      <td>826.9</td><td>793.9</td>
+      <td class="down-val">-4.0pp</td>
+      <td>14.2</td><td>13.8</td>
+      <td class="down-val">-2.8pp</td>
+    </tr>
+<tr>
+      <td><b>贵都</b></td><td>工业园区</td><td>二手房五部</td>
+      <td>23</td><td>23</td>
+      <td class="zero-val">0</td>
+      <td>1</td><td>1</td>
+      <td class="zero-val">0</td>
+      <td>4.3%</td><td>4.3%</td>
+      <td class="zero-val">+0.0pp</td>
+      <td>11.6</td><td>14</td>
+      <td class="up-val">+21.0pp</td>
+      <td>8.8</td><td>10.6</td>
+      <td class="up-val">+20.8pp</td>
+      <td>0.1</td><td>0.3</td>
+      <td class="up-val">+148.0pp</td>
+    </tr>
+<tr>
+      <td><b>跨塘</b></td><td>工业园区</td><td>苏州商业部</td>
+      <td>79</td><td>69</td>
+      <td class="down-val">-10</td>
+      <td>31</td><td>19</td>
+      <td class="down-val">-12</td>
+      <td>39.2%</td><td>27.5%</td>
+      <td class="down-val">-11.7pp</td>
+      <td>273.0</td><td>264.8</td>
+      <td class="down-val">-3.0pp</td>
+      <td>755</td><td>623.1</td>
+      <td class="down-val">-17.5pp</td>
+      <td>16.2</td><td>12.9</td>
+      <td class="down-val">-20.2pp</td>
+    </tr>
+<tr>
+      <td><b>玲珑</b></td><td>工业园区</td><td>二手房五部</td>
+      <td>283</td><td>279</td>
+      <td class="down-val">-4</td>
+      <td>40</td><td>46</td>
+      <td class="up-val">+6</td>
+      <td>14.1%</td><td>16.5%</td>
+      <td class="up-val">+2.4pp</td>
+      <td>194.2</td><td>212.1</td>
+      <td class="up-val">+9.2pp</td>
+      <td>389.2</td><td>386.7</td>
+      <td class="down-val">-0.6pp</td>
+      <td>5.7</td><td>4.6</td>
+      <td class="down-val">-19.0pp</td>
+    </tr>
+<tr>
+      <td><b>娄葑</b></td><td>工业园区</td><td>二手房五部</td>
+      <td>183</td><td>185</td>
+      <td class="up-val">+2</td>
+      <td>27</td><td>33</td>
+      <td class="up-val">+6</td>
+      <td>14.8%</td><td>17.8%</td>
+      <td class="up-val">+3.1pp</td>
+      <td>136.2</td><td>155.5</td>
+      <td class="up-val">+14.2pp</td>
+      <td>505.5</td><td>482</td>
+      <td class="down-val">-4.7pp</td>
+      <td>10.6</td><td>9.6</td>
+      <td class="down-val">-9.7pp</td>
+    </tr>
+<tr>
+      <td><b>青剑湖</b></td><td>工业园区</td><td>苏州商业部</td>
+      <td>286</td><td>296</td>
+      <td class="up-val">+10</td>
+      <td>58</td><td>62</td>
+      <td class="up-val">+4</td>
+      <td>20.3%</td><td>20.9%</td>
+      <td class="up-val">+0.7pp</td>
+      <td>677.0</td><td>675.0</td>
+      <td class="down-val">-0.3pp</td>
+      <td>1,980.8</td><td>1,738.6</td>
+      <td class="down-val">-12.2pp</td>
+      <td>41.9</td><td>31.6</td>
+      <td class="down-val">-24.4pp</td>
+    </tr>
+<tr>
+      <td><b>中海</b></td><td>工业园区</td><td>苏州商业部</td>
+      <td>275</td><td>273</td>
+      <td class="down-val">-2</td>
+      <td>25</td><td>28</td>
+      <td class="up-val">+3</td>
+      <td>9.1%</td><td>10.3%</td>
+      <td class="up-val">+1.2pp</td>
+      <td>351.7</td><td>397.8</td>
+      <td class="up-val">+13.1pp</td>
+      <td>1,056.1</td><td>1,074.9</td>
+      <td class="up-val">+1.8pp</td>
+      <td>18.5</td><td>21.0</td>
+      <td class="up-val">+13.4pp</td>
+    </tr>
+<tr>
+      <td><b>横塘</b></td><td>高新区</td><td>二手房六部</td>
+      <td>74</td><td>73</td>
+      <td class="down-val">-1</td>
+      <td>26</td><td>25</td>
+      <td class="down-val">-1</td>
+      <td>35.1%</td><td>34.2%</td>
+      <td class="down-val">-0.9pp</td>
+      <td>163.2</td><td>177.7</td>
+      <td class="up-val">+8.9pp</td>
+      <td>579.8</td><td>531.9</td>
+      <td class="down-val">-8.3pp</td>
+      <td>15.5</td><td>11</td>
+      <td class="down-val">-28.8pp</td>
+    </tr>
+<tr>
+      <td><b>沧浪新城</b></td><td>沧浪区</td><td>二手房六部</td>
+      <td>133</td><td>136</td>
+      <td class="up-val">+3</td>
+      <td>35</td><td>32</td>
+      <td class="down-val">-3</td>
+      <td>26.3%</td><td>23.5%</td>
+      <td class="down-val">-2.8pp</td>
+      <td>160.7</td><td>166.1</td>
+      <td class="up-val">+3.4pp</td>
+      <td>308.4</td><td>373.4</td>
+      <td class="up-val">+21.1pp</td>
+      <td>6.2</td><td>6.8</td>
+      <td class="up-val">+9.9pp</td>
+    </tr>
+<tr>
+      <td><b>葑门</b></td><td>沧浪区</td><td>二手房五部</td>
+      <td>134</td><td>139</td>
+      <td class="up-val">+5</td>
+      <td>40</td><td>48</td>
+      <td class="up-val">+8</td>
+      <td>29.9%</td><td>34.5%</td>
+      <td class="up-val">+4.7pp</td>
+      <td>389.9</td><td>398.5</td>
+      <td class="up-val">+2.2pp</td>
+      <td>834.2</td><td>751.9</td>
+      <td class="down-val">-9.9pp</td>
+      <td>18.8</td><td>13.8</td>
+      <td class="down-val">-26.4pp</td>
+    </tr>
+<tr>
+      <td><b>南门</b></td><td>沧浪区</td><td>二手房五部</td>
+      <td>279</td><td>291</td>
+      <td class="up-val">+12</td>
+      <td>46</td><td>60</td>
+      <td class="up-val">+14</td>
+      <td>16.5%</td><td>20.6%</td>
+      <td class="up-val">+4.1pp</td>
+      <td>422.5</td><td>429.6</td>
+      <td class="up-val">+1.7pp</td>
+      <td>846.2</td><td>766.8</td>
+      <td class="down-val">-9.4pp</td>
+      <td>19.5</td><td>12.4</td>
+      <td class="down-val">-36.3pp</td>
+    </tr>
+<tr>
+      <td><b>吴门桥</b></td><td>沧浪区</td><td>二手房五部</td>
+      <td>37</td><td>39</td>
+      <td class="up-val">+2</td>
+      <td>0</td><td>6</td>
+      <td class="up-val">+6</td>
+      <td>0.0%</td><td>15.4%</td>
+      <td class="up-val">+15.4pp</td>
+      <td>82.8</td><td>87.8</td>
+      <td class="up-val">+6.0pp</td>
+      <td>245.8</td><td>248.1</td>
+      <td class="up-val">+0.9pp</td>
+      <td>5.5</td><td>5.6</td>
+      <td class="up-val">+0.9pp</td>
+    </tr>
+<tr>
+      <td><b>胥江</b></td><td>沧浪区</td><td>二手房六部</td>
+      <td>145</td><td>149</td>
+      <td class="up-val">+4</td>
+      <td>35</td><td>48</td>
+      <td class="up-val">+13</td>
+      <td>24.1%</td><td>32.2%</td>
+      <td class="up-val">+8.1pp</td>
+      <td>217.0</td><td>236.6</td>
+      <td class="up-val">+9.0pp</td>
+      <td>601.2</td><td>575.8</td>
+      <td class="down-val">-4.2pp</td>
+      <td>13.2</td><td>13.7</td>
+      <td class="up-val">+3.9pp</td>
+    </tr>
+<tr>
+      <td><b>虎丘城区</b></td><td>虎丘</td><td>苏州商业部</td>
+      <td>2</td><td>3</td>
+      <td class="up-val">+1</td>
+      <td>0</td><td>0</td>
+      <td class="zero-val">0</td>
+      <td>0.0%</td><td>0.0%</td>
+      <td class="zero-val">+0.0pp</td>
+      <td>234.5</td><td>248.8</td>
+      <td class="up-val">+6.1pp</td>
+      <td>687.3</td><td>643.4</td>
+      <td class="down-val">-6.4pp</td>
+      <td>16.4</td><td>11.7</td>
+      <td class="down-val">-28.9pp</td>
+    </tr>
+<tr>
+      <td><b>彩香</b></td><td>金阊区</td><td>二手房六部</td>
+      <td>89</td><td>93</td>
+      <td class="up-val">+4</td>
+      <td>35</td><td>36</td>
+      <td class="up-val">+1</td>
+      <td>39.3%</td><td>38.7%</td>
+      <td class="down-val">-0.6pp</td>
+      <td>443.6</td><td>481.8</td>
+      <td class="up-val">+8.6pp</td>
+      <td>1,467.8</td><td>1,509.3</td>
+      <td class="up-val">+2.8pp</td>
+      <td>28.4</td><td>30.3</td>
+      <td class="up-val">+6.9pp</td>
+    </tr>
+<tr>
+      <td><b>留园</b></td><td>金阊区</td><td>苏州商业部</td>
+      <td>14</td><td>15</td>
+      <td class="up-val">+1</td>
+      <td>2</td><td>5</td>
+      <td class="up-val">+3</td>
+      <td>14.3%</td><td>33.3%</td>
+      <td class="up-val">+19.1pp</td>
+      <td>252.2</td><td>278.6</td>
+      <td class="up-val">+10.4pp</td>
+      <td>860.7</td><td>824.2</td>
+      <td class="down-val">-4.2pp</td>
+      <td>15.3</td><td>15.6</td>
+      <td class="up-val">+1.6pp</td>
+    </tr>
+<tr>
+      <td><b>西园</b></td><td>金阊区</td><td>苏州商业部</td>
+      <td>29</td><td>30</td>
+      <td class="up-val">+1</td>
+      <td>0</td><td>2</td>
+      <td class="up-val">+2</td>
+      <td>0.0%</td><td>6.7%</td>
+      <td class="up-val">+6.7pp</td>
+      <td>39.6</td><td>49.8</td>
+      <td class="up-val">+25.8pp</td>
+      <td>111.2</td><td>107.2</td>
+      <td class="down-val">-3.6pp</td>
+      <td>2.6</td><td>1.6</td>
+      <td class="down-val">-38.8pp</td>
+    </tr>
+<tr>
+      <td><b>观前</b></td><td>平江区</td><td>苏州商业部</td>
+      <td>35</td><td>35</td>
+      <td class="zero-val">0</td>
+      <td>6</td><td>6</td>
+      <td class="zero-val">0</td>
+      <td>17.1%</td><td>17.1%</td>
+      <td class="zero-val">+0.0pp</td>
+      <td>19.6</td><td>19.6</td>
+      <td class="down-val">-0.1pp</td>
+      <td>62.5</td><td>49.0</td>
+      <td class="down-val">-21.7pp</td>
+      <td>0.5</td><td>0.9</td>
+      <td class="up-val">+103.7pp</td>
+    </tr>
+<tr>
+      <td><b>娄门</b></td><td>平江区</td><td>苏州商业部</td>
+      <td>116</td><td>118</td>
+      <td class="up-val">+2</td>
+      <td>15</td><td>18</td>
+      <td class="up-val">+3</td>
+      <td>12.9%</td><td>15.3%</td>
+      <td class="up-val">+2.3pp</td>
+      <td>209.4</td><td>225.8</td>
+      <td class="up-val">+7.9pp</td>
+      <td>483.8</td><td>466.3</td>
+      <td class="down-val">-3.6pp</td>
+      <td>10.8</td><td>8.2</td>
+      <td class="down-val">-23.9pp</td>
+    </tr>
+<tr>
+      <td><b>平江路</b></td><td>平江区</td><td>二手房二部</td>
+      <td>1</td><td>1</td>
+      <td class="zero-val">0</td>
+      <td>0</td><td>0</td>
+      <td class="zero-val">0</td>
+      <td>0.0%</td><td>0.0%</td>
+      <td class="zero-val">+0.0pp</td>
+      <td>60.0</td><td>50.0</td>
+      <td class="down-val">-16.7pp</td>
+      <td>163.5</td><td>118.3</td>
+      <td class="down-val">-27.6pp</td>
+      <td>1.8</td><td>0.9</td>
+      <td class="down-val">-50.4pp</td>
+    </tr>
+<tr>
+      <td><b>苏锦</b></td><td>平江区</td><td>二手房二部</td>
+      <td>50</td><td>45</td>
+      <td class="down-val">-5</td>
+      <td>16</td><td>18</td>
+      <td class="up-val">+2</td>
+      <td>32.0%</td><td>40.0%</td>
+      <td class="up-val">+8.0pp</td>
+      <td>91.5</td><td>100.4</td>
+      <td class="up-val">+9.7pp</td>
+      <td>241.3</td><td>250.9</td>
+      <td class="up-val">+4.0pp</td>
+      <td>5.6</td><td>5.0</td>
+      <td class="down-val">-11.1pp</td>
+    </tr>
+<tr>
+      <td><b>桃花坞</b></td><td>平江区</td><td>二手房二部</td>
+      <td>8</td><td>8</td>
+      <td class="zero-val">0</td>
+      <td>0</td><td>0</td>
+      <td class="zero-val">0</td>
+      <td>0.0%</td><td>0.0%</td>
+      <td class="zero-val">+0.0pp</td>
+      <td>99.7</td><td>97.8</td>
+      <td class="down-val">-1.8pp</td>
+      <td>288.5</td><td>286.1</td>
+      <td class="down-val">-0.8pp</td>
+      <td>4</td><td>5.7</td>
+      <td class="up-val">+43.0pp</td>
+    </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</div>
+
+<div class="nav-dots">
+  <div class="nav-dot active" data-sec="sec-overview" title="总览"></div>
+  <div class="nav-dot" data-sec="sec-dept" title="部门售卖"></div>
+  <div class="nav-dot" data-sec="sec-findings" title="发现"></div>
+  <div class="nav-dot" data-sec="sec-charts1" title="核心指标"></div>
+  <div class="nav-dot" data-sec="sec-charts2" title="效果指标"></div>
+  <div class="nav-dot" data-sec="sec-table" title="明细"></div>
+</div>
+
+<script>
+
+var districtNames = ["东山", "独墅湖西", "临湖镇", "龙西", "黄桥", "常熟老街", "梅李", "平望", "桃源", "同里", "震泽", "东环", "东沙湖", "贵都", "跨塘", "玲珑", "娄葑", "青剑湖", "中海", "横塘", "沧浪新城", "葑门", "南门", "吴门桥", "胥江", "虎丘城区", "彩香", "留园", "西园", "观前", "娄门", "平江路", "苏锦", "桃花坞"];
+var devRateChange = [0, 0, 13.57, 1.32, 13.33, 3.85, -26.67, 2.56, 0.0, 1.67, -19.33, 5.56, 0.08, 0, -11.7, 2.35, 3.08, 0.67, 1.17, -0.89, -2.79, 4.68, 4.13, 15.38, 8.08, 0, -0.62, 19.05, 6.67, 0.0, 2.32, 0, 8.0, 0];
+var coopChange = [0, 0, 22, 5, 4, -3, -4, 0, 0, 0, -2, 11, 0, 0, -12, 6, 6, 4, 3, -1, -3, 8, 14, 6, 13, 0, 1, 3, 2, 0, 3, 0, 2, 0];
+var skuChangePct = [24.51, 14.82, -7.42, 15.01, 10.71, 1.81, 8.36, 4.85, 0.96, 0.25, -10.22, 13.82, 16.78, 21.0, -3.01, 9.23, 14.19, -0.29, 13.11, 8.9, 3.39, 2.21, 1.68, 5.97, 9.02, 6.09, 8.62, 10.45, 25.8, -0.15, 7.87, -16.72, 9.74, -1.83];
+var vppvChangePct = [6.59, -2.38, -12.97, 4.83, 11.78, 14.13, -7.89, -6.13, -24.82, -7.35, -19.08, 3.77, -3.99, 20.82, -17.47, -0.64, -4.65, -12.23, 1.78, -8.27, 21.07, -9.86, -9.39, 0.92, -4.22, -6.38, 2.83, -4.25, -3.63, -21.68, -3.61, -27.65, 3.98, -0.82];
+var deptNames = ["二手房三部", "二手房五部", "二手房三部", "二手房三部", "二手房二部", "二手房六部", "二手房六部", "二手房三部", "二手房三部", "二手房三部", "二手房三部", "二手房五部", "二手房五部", "二手房五部", "苏州商业部", "二手房五部", "二手房五部", "苏州商业部", "苏州商业部", "二手房六部", "二手房六部", "二手房五部", "二手房五部", "二手房五部", "二手房六部", "苏州商业部", "二手房六部", "苏州商业部", "苏州商业部", "苏州商业部", "苏州商业部", "二手房二部", "二手房二部", "二手房二部"];
+
+// Chart 1: Dev Rate Change
+(function(){
+  var c = echarts.init(document.getElementById('chart-devrate'));
+  var data = devRateChange.map(function(v){ return {value:v, itemStyle:{color:v>=0?'#2d9f2d':'#e63946'}}; });
+  c.setOption({
+    title:{text:'开发率环比变化（pp）',left:'center',textStyle:{fontSize:14,color:'#1e3a5f'}},
+    tooltip:{trigger:'axis'},
+    grid:{left:100,right:50,top:40,bottom:20},
+    xAxis:{type:'value'},
+    yAxis:{type:'category',data:districtNames,inverse:true,axisLabel:{fontSize:11}},
+    series:[{type:'bar',data:data,barWidth:12,barGap:'30%',barCategoryGap:'40%',
+      label:{show:true,position:'right',fontSize:10,formatter:function(p){var v=p.value;return (v>=0?'+':'')+v.toFixed(1)+'pp';}}
+    }]
+  });
+  window.addEventListener('resize',function(){c.resize();});
+})();
+
+// Chart 2: Coop Change
+(function(){
+  var c = echarts.init(document.getElementById('chart-coop'));
+  var data = coopChange.map(function(v){ return {value:v, itemStyle:{color:v>=0?'#2d9f2d':'#e63946'}}; });
+  c.setOption({
+    title:{text:'合作人数环比变化（人）',left:'center',textStyle:{fontSize:14,color:'#1e3a5f'}},
+    tooltip:{trigger:'axis'},
+    grid:{left:100,right:50,top:40,bottom:20},
+    xAxis:{type:'value'},
+    yAxis:{type:'category',data:districtNames,inverse:true,axisLabel:{fontSize:11}},
+    series:[{type:'bar',data:data,barWidth:12,barGap:'30%',barCategoryGap:'40%',
+      label:{show:true,position:'right',fontSize:10,formatter:function(p){var v=p.value;return (v>=0?'+':'')+v;}}
+    }]
+  });
+  window.addEventListener('resize',function(){c.resize();});
+})();
+
+// Chart 3: SKU Change
+(function(){
+  var c = echarts.init(document.getElementById('chart-sku'));
+  var data = skuChangePct.map(function(v){ return {value:v, itemStyle:{color:v>=0?'#2d9f2d':'#e63946'}}; });
+  c.setOption({
+    title:{text:'二手房SKU数环比变化（%）',left:'center',textStyle:{fontSize:14,color:'#1e3a5f'}},
+    tooltip:{trigger:'axis'},
+    grid:{left:100,right:50,top:40,bottom:20},
+    xAxis:{type:'value'},
+    yAxis:{type:'category',data:districtNames,inverse:true,axisLabel:{fontSize:11}},
+    series:[{type:'bar',data:data,barWidth:12,barGap:'30%',barCategoryGap:'40%',
+      label:{show:true,position:'right',fontSize:10,formatter:function(p){var v=p.value;return (v>=0?'+':'')+v.toFixed(1)+'%';}}
+    }]
+  });
+  window.addEventListener('resize',function(){c.resize();});
+})();
+
+// Chart 4: VPPV Change
+(function(){
+  var c = echarts.init(document.getElementById('chart-vppv'));
+  var data = vppvChangePct.map(function(v){ return {value:v, itemStyle:{color:v>=0?'#2d9f2d':'#e63946'}}; });
+  c.setOption({
+    title:{text:'二手房VPPV环比变化（%）',left:'center',textStyle:{fontSize:14,color:'#1e3a5f'}},
+    tooltip:{trigger:'axis'},
+    grid:{left:100,right:50,top:40,bottom:20},
+    xAxis:{type:'value'},
+    yAxis:{type:'category',data:districtNames,inverse:true,axisLabel:{fontSize:11}},
+    series:[{type:'bar',data:data,barWidth:12,barGap:'30%',barCategoryGap:'40%',
+      label:{show:true,position:'right',fontSize:10,formatter:function(p){var v=p.value;return (v>=0?'+':'')+v.toFixed(1)+'%';}}
+    }]
+  });
+  window.addEventListener('resize',function(){c.resize();});
+})();
+
+// Navigation
+document.querySelectorAll('.nav-dot').forEach(function(dot){
+  dot.addEventListener('click',function(){
+    document.getElementById(this.getAttribute('data-sec')).scrollIntoView({behavior:'smooth'});
+  });
+});
+var sections=['sec-overview','sec-dept','sec-findings','sec-charts1','sec-charts2','sec-table'];
+var dots=document.querySelectorAll('.nav-dot');
+window.addEventListener('scroll',function(){
+  var sp=window.scrollY+200;
+  sections.forEach(function(id,i){
+    var el=document.getElementById(id);
+    if(el&&sp>=el.offsetTop&&sp<el.offsetTop+el.offsetHeight){
+      dots.forEach(function(d){d.classList.remove('active');});
+      dots[i].classList.add('active');
+    }
+  });
+});
+</script>
+</body>
+</html>
