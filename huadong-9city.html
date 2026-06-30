@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>苏州核心指标·华东9城对标报告</title>
+<script src="https://registry.npmmirror.com/echarts/5.4.3/files/dist/echarts.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'Microsoft YaHei','PingFang SC',sans-serif;background:#f5f7fa;color:#2c3e50;line-height:1.7}
+.container{max-width:1100px;margin:0 auto;padding:20px 24px}
+h1{font-size:26px;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;padding:24px 0 6px;letter-spacing:1px}
+.subtitle{text-align:center;color:#8795a8;font-size:13px;margin-bottom:28px}
+h2{font-size:17px;color:#4a5568;border-left:4px solid #667eea;padding-left:12px;margin:32px 0 16px;letter-spacing:.5px}
+.top-cards{display:flex;gap:10px;margin:16px 0;flex-wrap:nowrap}
+.top-cards .card{flex:1;min-width:0;background:#fff;border-radius:8px;padding:12px 10px;box-shadow:0 2px 8px rgba(100,100,150,.08);position:relative;text-align:center;border-top:3px solid #667eea}
+.top-cards .card .label{font-size:11px;color:#8795a8;margin-bottom:2px;white-space:nowrap}
+.top-cards .card .value{font-size:20px;font-weight:700;color:#667eea}
+.top-cards .card .meta{font-size:10px;color:#a0aec0;margin-top:2px}
+.top-cards .card.green{border-top-color:#2d9f2d}
+.top-cards .card.green .value{color:#2d9f2d}
+.top-cards .card.red{border-top-color:#e63946}
+.top-cards .card.red .value{color:#e63946}
+.top-cards .card.amber{border-top-color:#f59e0b}
+.top-cards .card.amber .value{color:#f59e0b}
+.chart-box{background:#fff;border-radius:10px;padding:18px;margin:14px 0;box-shadow:0 2px 8px rgba(100,100,150,.08)}
+.chart-container{width:100%;height:340px}
+.chart-container.tall{height:420px}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;font-size:12.5px;box-shadow:0 2px 8px rgba(100,100,150,.08)}
+thead{background:linear-gradient(135deg,#667eea,#764ba2)}
+th{color:#fff;padding:8px 10px;font-weight:500;text-align:center;white-space:nowrap;font-size:12px}
+td{padding:7px 10px;text-align:center;border-bottom:1px solid #edf2f7}
+tr:nth-child(even){background:#f7fafc}
+tr:hover{background:#edf2f7}
+.sz-row{background:#eef0ff !important;font-weight:600}
+.up{color:#2d9f2d;font-weight:600}
+.down{color:#e63946;font-weight:600}
+.flat{color:#8795a8}
+.badge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:600}
+.badge.top{background:#e6ffed;color:#2d9f2d}
+.badge.mid{background:#f0f4ff;color:#667eea}
+.badge.low{background:#fff0f0;color:#e63946}
+.insight{background:linear-gradient(135deg,#f0f4ff,#faf5ff);border-radius:10px;padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.9;color:#4a5568;border:1px solid #e2e8f0}
+.insight strong{color:#5a67d8}
+.dot-nav{position:fixed;right:14px;top:50%;transform:translateY(-50%);z-index:100;display:flex;flex-direction:column;gap:7px}
+.dot-nav a{display:block;width:9px;height:9px;border-radius:50%;background:#c4b5fd;transition:.3s}
+.dot-nav a:hover,.dot-nav a.active{background:#667eea;transform:scale(1.4)}
+@media(max-width:768px){.top-cards{flex-wrap:wrap}.top-cards .card{flex:1 1 30%}h1{font-size:20px}}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>📊 苏州核心指标·华东9城对标报告</h1>
+<p class="subtitle">数据截至2026年6月30日 · 华东9城：昆山/苏州/杭州/无锡/常州/南京/合肥/徐州/宿迁</p>
+
+<div class="dot-nav">
+<a href="#sec1" title="总览"></a>
+<a href="#sec2" title="业绩达成"></a>
+<a href="#sec3" title="会员开通率"></a>
+<a href="#sec4" title="会员同环比"></a>
+<a href="#sec5" title="续费拉回新签"></a>
+<a href="#sec6" title="排名总览"></a>
+</div>
+
+<!-- ====== 顶部6指标卡 ====== -->
+<div id="sec1"></div>
+<h2>苏州核心指标速览</h2>
+<div class="top-cards">
+<div class="card green"><div class="label">月达成率</div><div class="value">87.39%</div><div class="meta">排名5/9 · 均值87.14%</div></div>
+<div class="card green"><div class="label">季达成率</div><div class="value">94.24%</div><div class="meta">排名5/9 · 均值92.75%</div></div>
+<div class="card green"><div class="label">年达成率</div><div class="value">47.82%</div><div class="meta">排名2/9 · 均值46.01%</div></div>
+<div class="card green"><div class="label">非B新签率</div><div class="value">27.89%</div><div class="meta">排名1/9 · 均值17.31%</div></div>
+<div class="card green"><div class="label">非B拉回率</div><div class="value">25.02%</div><div class="meta">排名2/9 · 均值20.08%</div></div>
+<div class="card red"><div class="label">B开通率</div><div class="value">11.20%</div><div class="meta">排名7/9 · 均值14.62%</div></div>
+</div>
+
+<div class="insight">
+<strong>🔍 一句话：</strong>月达成率87.39%排第5，冲刺后半程发力明显，但月环比-44.14%排名垫底说明节奏波动大。非B开发端持续领先（新签率第1、拉回率第2），但<strong>B开通率11.20%排第7、商业开通率60.02%排第8仍是核心短板</strong>。
+</div>
+
+<!-- ====== 一、业绩达成 ====== -->
+<div id="sec2"></div>
+<h2>一、业绩达成</h2>
+<div class="chart-box">
+<div id="chart_achieve_dev" class="chart-container"></div>
+</div>
+<div style="overflow-x:auto">
+<table>
+<thead><tr><th>城市</th><th>月达成</th><th>月环比</th><th>月同比</th><th>季达成</th><th>季环比</th><th>季同比</th><th>年达成</th><th>年同比</th></tr></thead>
+<tbody>
+<tr><td>徐州</td><td class="">103.50%</td><td class="down">-24.16%</td><td class="up">8.06%</td><td class="">95.21%</td><td class="up">11.97%</td><td class="down">-10.60%</td><td class="">44.47%</td><td class="down">-9.98%</td></tr>
+<tr><td>南京</td><td class="">99.66%</td><td class="down">-25.80%</td><td class="up">1.11%</td><td class="">97.48%</td><td class="up">30.38%</td><td class="down">-9.53%</td><td class="">45.91%</td><td class="down">-13.02%</td></tr>
+<tr><td>宿迁</td><td class="">99.44%</td><td class="down">-26.91%</td><td class="down">-6.60%</td><td class="">94.80%</td><td class="up">16.96%</td><td class="down">-20.41%</td><td class="">42.92%</td><td class="down">-23.19%</td></tr>
+<tr><td>无锡</td><td class="">87.62%</td><td class="down">-11.50%</td><td class="down">-0.46%</td><td class="">93.85%</td><td class="up">16.54%</td><td class="down">-9.70%</td><td class="">46.37%</td><td class="down">-8.09%</td></tr>
+<tr class="sz-row"><td>苏州</td><td class="">87.39%</td><td class="down">-44.14%</td><td class="down">-13.96%</td><td class="">94.24%</td><td class="up">16.02%</td><td class="down">-8.98%</td><td class="">47.82%</td><td class="down">-10.30%</td></tr>
+<tr><td>合肥</td><td class="">84.09%</td><td class="down">-24.59%</td><td class="down">-12.52%</td><td class="">86.95%</td><td class="up">22.70%</td><td class="down">-15.19%</td><td class="">44.86%</td><td class="down">-10.43%</td></tr>
+<tr><td>昆山</td><td class="">80.87%</td><td class="down">-29.33%</td><td class="down">-8.58%</td><td class="">92.11%</td><td class="up">14.77%</td><td class="down">-8.98%</td><td class="">48.42%</td><td class="down">-7.75%</td></tr>
+<tr><td>杭州</td><td class="">71.44%</td><td class="down">-37.96%</td><td class="down">-6.62%</td><td class="">94.64%</td><td class="up">20.96%</td><td class="down">-8.93%</td><td class="">47.66%</td><td class="down">-9.92%</td></tr>
+<tr><td>常州</td><td class="">70.27%</td><td class="down">-37.70%</td><td class="down">-18.84%</td><td class="">85.49%</td><td class="up">4.92%</td><td class="down">-17.30%</td><td class="">45.62%</td><td class="down">-12.10%</td></tr>
+<tr style="background:#faf5ff;font-weight:500"><td>9城均值</td><td>87.14%</td><td>-29.12%</td><td>-6.49%</td><td>92.75%</td><td>17.25%</td><td>-12.18%</td><td>46.01%</td><td>-11.64%</td></tr>
+</tbody>
+</table>
+</div>
+<div class="insight">
+<strong>🔍 判断：</strong>季达成率94.24%排第5，较上期有所回落。但季同比-8.98%排第3（高于均值3.2pp），年达成率47.82%排第2。月环比-44.14%排第9，6月末冲刺节奏偏弱，需关注7月开局。
+</div>
+
+<!-- ====== 二、会员开通率 ====== -->
+<div id="sec3"></div>
+<h2>二、会员开通率</h2>
+<div class="chart-box">
+<div id="chart_open_dev" class="chart-container"></div>
+</div>
+<div style="overflow-x:auto">
+<table>
+<thead><tr><th>城市</th><th>B开通率</th><th>非B开通率</th><th>住宅开通率</th><th>商业开通率</th></tr></thead>
+<tbody>
+<tr><td>宿迁</td><td>24.74%</td><td>68.49%</td><td>70.52%</td><td>95.24%</td></tr>
+<tr><td>昆山</td><td>21.47%</td><td>62.06%</td><td>46.99%</td><td>63.41%</td></tr>
+<tr><td>徐州</td><td>17.05%</td><td>64.57%</td><td>32.53%</td><td>85.71%</td></tr>
+<tr><td>常州</td><td>16.87%</td><td>48.68%</td><td>48.60%</td><td>76.03%</td></tr>
+<tr><td>南京</td><td>12.72%</td><td>51.80%</td><td>35.90%</td><td>63.62%</td></tr>
+<tr><td>无锡</td><td>11.53%</td><td>67.37%</td><td>38.80%</td><td>62.95%</td></tr>
+<tr class="sz-row"><td>苏州</td><td>11.20%</td><td>66.67%</td><td>42.32%</td><td>60.02%</td></tr>
+<tr><td>合肥</td><td>9.30%</td><td>60.66%</td><td>48.91%</td><td>71.03%</td></tr>
+<tr><td>杭州</td><td>6.72%</td><td>65.79%</td><td>48.97%</td><td>44.86%</td></tr>
+<tr style="background:#faf5ff;font-weight:500"><td>9城均值</td><td>14.62%</td><td>61.79%</td><td>45.95%</td><td>69.21%</td></tr>
+</tbody>
+</table>
+</div>
+<div class="insight">
+<strong>🔍 判断：</strong>开通率仍是苏州<strong>最大短板区</strong>。B开通率11.20%排第7，商业开通率60.02%排第8，较上期进一步下滑。非B开通率66.67%排第3是唯一亮点。B端和商业端开通率双低，与B开发能力不足高度关联。
+</div>
+
+<!-- ====== 三、会员同环比 ====== -->
+<div id="sec4"></div>
+<h2>三、会员规模同环比</h2>
+<div class="chart-box">
+<div id="chart_member_dev" class="chart-container tall"></div>
+</div>
+<p style="font-size:11px;color:#8795a8;margin:-8px 0 10px 4px">📌 环比均为负值（会员净流失），偏差为正=苏州流失幅度小于均值（优于均值），偏差为负=苏州流失幅度大于均值（劣于均值）</p>
+<div style="overflow-x:auto">
+<table>
+<thead><tr><th>城市</th><th>总会员环比</th><th>B会员环比</th><th>非B会员环比</th><th>住宅会员环比</th><th>商业会员环比</th></tr></thead>
+<tbody>
+<tr><td>徐州</td><td class="up">2.78%</td><td class="up">5.37%</td><td class="up">0.70%</td><td class="up">2.74%</td><td class="">0.00%</td></tr>
+<tr><td>宿迁</td><td class="down">-0.87%</td><td class="up">14.29%</td><td class="down">-1.07%</td><td class="down">-0.90%</td><td class="down">-1.64%</td></tr>
+<tr class="sz-row"><td>苏州</td><td class="down">-1.62%</td><td class="up">3.03%</td><td class="down">-2.86%</td><td class="down">-0.30%</td><td class="down">-12.60%</td></tr>
+<tr><td>合肥</td><td class="down">-4.77%</td><td class="down">-6.54%</td><td class="down">-4.44%</td><td class="down">-4.48%</td><td class="down">-7.89%</td></tr>
+<tr><td>杭州</td><td class="down">-4.86%</td><td class="down">-11.42%</td><td class="down">-3.85%</td><td class="down">-4.16%</td><td class="down">-8.93%</td></tr>
+<tr><td>南京</td><td class="down">-4.94%</td><td class="down">-4.99%</td><td class="down">-4.91%</td><td class="down">-4.04%</td><td class="down">-10.92%</td></tr>
+<tr><td>昆山</td><td class="down">-7.25%</td><td class="down">-8.86%</td><td class="down">-6.21%</td><td class="down">-6.76%</td><td class="down">-10.50%</td></tr>
+<tr><td>无锡</td><td class="down">-8.68%</td><td class="down">-12.43%</td><td class="down">-7.94%</td><td class="down">-8.05%</td><td class="down">-14.44%</td></tr>
+<tr><td>常州</td><td class="down">-12.82%</td><td class="down">-12.87%</td><td class="down">-12.81%</td><td class="down">-13.53%</td><td class="down">-8.19%</td></tr>
+<tr style="background:#faf5ff;font-weight:500"><td>9城均值</td><td>-4.78%</td><td>-3.83%</td><td>-4.82%</td><td>-4.39%</td><td>-8.34%</td></tr>
+</tbody>
+</table>
+</div>
+<div class="insight">
+<strong>🔍 判断：</strong>总/B/非B/住宅会员流失幅度均好于9城均值，控流失表现中上。但<strong>商业会员环比-12.60%排第8</strong>，低于均值4.3pp，商业条线会员留存持续承压，是会员维度唯一严重落后指标。
+</div>
+
+<!-- ====== 四、续费·拉回·新签 ====== -->
+<div id="sec5"></div>
+<h2>四、续费率·拉回率·新签率</h2>
+<div class="chart-box">
+<div id="chart_renew_dev" class="chart-container tall"></div>
+</div>
+<div style="overflow-x:auto">
+<table>
+<thead><tr><th>城市</th><th>总续费率</th><th>B续费率</th><th>非B续费率</th><th>总拉回率</th><th>B拉回率</th><th>非B拉回率</th><th>总新签率</th><th>B新签率</th><th>非B新签率</th></tr></thead>
+<tbody>
+<tr><td>无锡</td><td>74.46%</td><td>55.41%</td><td>77.17%</td><td>20.12%</td><td>12.34%</td><td>23.25%</td><td>3.06%</td><td>0.65%</td><td>14.67%</td></tr>
+<tr><td>杭州</td><td>71.69%</td><td>50.55%</td><td>74.15%</td><td>23.07%</td><td>12.19%</td><td>26.46%</td><td>6.01%</td><td>1.44%</td><td>24.15%</td></tr>
+<tr><td>宿迁</td><td>70.89%</td><td>91.67%</td><td>70.45%</td><td>16.67%</td><td>16.67%</td><td>16.67%</td><td>17.94%</td><td>27.27%</td><td>17.72%</td></tr>
+<tr><td>徐州</td><td>70.00%</td><td>70.19%</td><td>69.85%</td><td>14.15%</td><td>11.24%</td><td>18.05%</td><td>4.87%</td><td>3.26%</td><td>15.78%</td></tr>
+<tr class="sz-row"><td>苏州</td><td>67.74%</td><td>59.05%</td><td>69.40%</td><td>21.13%</td><td>13.72%</td><td>25.02%</td><td>6.34%</td><td>2.23%</td><td>27.89%</td></tr>
+<tr><td>南京</td><td>64.26%</td><td>63.15%</td><td>64.73%</td><td>19.32%</td><td>14.36%</td><td>22.01%</td><td>5.76%</td><td>2.29%</td><td>16.10%</td></tr>
+<tr><td>昆山</td><td>62.10%</td><td>57.38%</td><td>65.58%</td><td>14.63%</td><td>13.02%</td><td>16.33%</td><td>4.46%</td><td>3.14%</td><td>9.02%</td></tr>
+<tr><td>合肥</td><td>55.86%</td><td>56.60%</td><td>55.70%</td><td>16.87%</td><td>10.47%</td><td>18.16%</td><td>6.54%</td><td>1.50%</td><td>19.57%</td></tr>
+<tr><td>常州</td><td>53.79%</td><td>53.79%</td><td>53.79%</td><td>14.37%</td><td>9.47%</td><td>14.78%</td><td>8.02%</td><td>1.94%</td><td>10.89%</td></tr>
+<tr style="background:#faf5ff;font-weight:500"><td>9城均值</td><td>65.64%</td><td>61.98%</td><td>66.76%</td><td>17.81%</td><td>12.61%</td><td>20.08%</td><td>7.00%</td><td>4.86%</td><td>17.31%</td></tr>
+</tbody>
+</table>
+</div>
+<div class="insight">
+<strong>🔍 判断：</strong>非B新签率27.89%排第1（高于均值10.6pp），非B拉回率25.02%排第2，非B开发效率持续领先。但B新签率2.23%排第5，B续费率59.05%排第4低于均值2.9pp。<strong>B端从续签到新签全面弱于非B，结构性问题未改善</strong>。
+</div>
+
+<!-- ====== 五、排名总览 ====== -->
+<div id="sec6"></div>
+<h2>五、苏州全指标排名总览</h2>
+<div style="overflow-x:auto">
+<table>
+<thead>
+<tr><th>指标</th><th>苏州值</th><th>9城均值</th><th>差值</th><th>排名</th><th>评价</th></tr>
+</thead>
+<tbody>
+<tr class="sz-row"><td>月达成率</td>
+<td>87.39%</td>
+<td>87.14%</td>
+<td class="up">+0.25pp</td>
+<td class="">5/9</td>
+<td><span class="badge mid">持平</span></td></tr>
+<tr class="sz-row"><td>月业绩环比</td>
+<td>-44.14%</td>
+<td>-29.12%</td>
+<td class="down">-15.02pp</td>
+<td class="down">9/9</td>
+<td><span class="badge low">短板</span></td></tr>
+<tr class="sz-row"><td>月业绩同比</td>
+<td>-13.96%</td>
+<td>-6.49%</td>
+<td class="down">-7.47pp</td>
+<td class="down">8/9</td>
+<td><span class="badge low">短板</span></td></tr>
+<tr class="sz-row"><td>季达成率</td>
+<td>94.24%</td>
+<td>92.75%</td>
+<td class="up">+1.49pp</td>
+<td class="">5/9</td>
+<td><span class="badge mid">持平</span></td></tr>
+<tr class="sz-row"><td>季环比</td>
+<td>16.02%</td>
+<td>17.25%</td>
+<td class="down">-1.22pp</td>
+<td class="">6/9</td>
+<td><span class="badge mid">持平</span></td></tr>
+<tr class="sz-row"><td>季同比</td>
+<td>-8.98%</td>
+<td>-12.18%</td>
+<td class="up">+3.20pp</td>
+<td class="up">3/9</td>
+<td><span class="badge mid">优势</span></td></tr>
+<tr class="sz-row"><td>年达成率</td>
+<td>47.82%</td>
+<td>46.01%</td>
+<td class="up">+1.82pp</td>
+<td class="up">2/9</td>
+<td><span class="badge top">领先</span></td></tr>
+<tr class="sz-row"><td>年同比</td>
+<td>-10.30%</td>
+<td>-11.64%</td>
+<td class="up">+1.34pp</td>
+<td class="">5/9</td>
+<td><span class="badge mid">持平</span></td></tr>
+<tr class="sz-row"><td>B开通率</td>
+<td>11.20%</td>
+<td>14.62%</td>
+<td class="down">-3.42pp</td>
+<td class="down">7/9</td>
+<td><span class="badge low">偏弱</span></td></tr>
+<tr class="sz-row"><td>非B开通率</td>
+<td>66.67%</td>
+<td>61.79%</td>
+<td class="up">+4.88pp</td>
+<td class="up">3/9</td>
+<td><span class="badge mid">优势</span></td></tr>
+<tr class="sz-row"><td>住宅开通率</td>
+<td>42.32%</td>
+<td>45.95%</td>
+<td class="down">-3.63pp</td>
+<td class="">6/9</td>
+<td><span class="badge mid">持平</span></td></tr>
+<tr class="sz-row"><td>商业开通率</td>
+<td>60.02%</td>
+<td>69.21%</td>
+<td class="down">-9.19pp</td>
+<td class="down">8/9</td>
+<td><span class="badge low">短板</span></td></tr>
+<tr class="sz-row"><td>总会员环比</td>
+<td>-1.62%</td>
+<td>-4.78%</td>
+<td class="up">+3.16pp</td>
+<td class="up">3/9</td>
+<td><span class="badge mid">优势</span></td></tr>
+<tr class="sz-row"><td>B会员环比</td>
+<td>3.03%</td>
+<td>-3.83%</td>
+<td class="up">+6.86pp</td>
+<td class="up">3/9</td>
+<td><span class="badge mid">优势</span></td></tr>
+<tr class="sz-row"><td>非B会员环比</td>
+<td>-2.86%</td>
+<td>-4.82%</td>
+<td class="up">+1.96pp</td>
+<td class="up">3/9</td>
+<td><span class="badge mid">优势</span></td></tr>
+<tr class="sz-row"><td>住宅会员环比</td>
+<td>-0.30%</td>
+<td>-4.39%</td>
+<td class="up">+4.09pp</td>
+<td class="up">2/9</td>
+<td><span class="badge top">领先</span></td></tr>
+<tr class="sz-row"><td>商业会员环比</td>
+<td>-12.60%</td>
+<td>-8.34%</td>
+<td class="down">-4.25pp</td>
+<td class="down">8/9</td>
+<td><span class="badge low">短板</span></td></tr>
+<tr class="sz-row"><td>总续费率</td>
+<td>67.74%</td>
+<td>65.64%</td>
+<td class="up">+2.10pp</td>
+<td class="">5/9</td>
+<td><span class="badge mid">持平</span></td></tr>
+<tr class="sz-row"><td>B续费率</td>
+<td>59.05%</td>
+<td>61.98%</td>
+<td class="down">-2.93pp</td>
+<td class="up">4/9</td>
+<td><span class="badge mid">优势</span></td></tr>
+<tr class="sz-row"><td>非B续费率</td>
+<td>69.40%</td>
+<td>66.76%</td>
+<td class="up">+2.64pp</td>
+<td class="">5/9</td>
+<td><span class="badge mid">持平</span></td></tr>
+<tr class="sz-row"><td>总拉回率</td>
+<td>21.13%</td>
+<td>17.81%</td>
+<td class="up">+3.32pp</td>
+<td class="up">2/9</td>
+<td><span class="badge top">领先</span></td></tr>
+<tr class="sz-row"><td>B拉回率</td>
+<td>13.72%</td>
+<td>12.61%</td>
+<td class="up">+1.11pp</td>
+<td class="up">3/9</td>
+<td><span class="badge mid">优势</span></td></tr>
+<tr class="sz-row"><td>非B拉回率</td>
+<td>25.02%</td>
+<td>20.08%</td>
+<td class="up">+4.94pp</td>
+<td class="up">2/9</td>
+<td><span class="badge top">领先</span></td></tr>
+<tr class="sz-row"><td>总新签率</td>
+<td>6.34%</td>
+<td>7.00%</td>
+<td class="down">-0.66pp</td>
+<td class="up">4/9</td>
+<td><span class="badge mid">优势</span></td></tr>
+<tr class="sz-row"><td>B新签率</td>
+<td>2.23%</td>
+<td>4.86%</td>
+<td class="down">-2.63pp</td>
+<td class="">5/9</td>
+<td><span class="badge mid">持平</span></td></tr>
+<tr class="sz-row"><td>非B新签率</td>
+<td>27.89%</td>
+<td>17.31%</td>
+<td class="up">+10.58pp</td>
+<td class="up">1/9</td>
+<td><span class="badge top">领先</span></td></tr>
+
+</tbody>
+</table>
+</div>
+
+<div class="insight" style="margin-bottom:40px">
+<strong>📋 总结：</strong><br>
+<strong>苏州三大优势</strong>：非B新签率(高于均值10.6pp)；B会员环比(高于均值6.9pp)；非B拉回率(高于均值4.9pp)。<br>
+<strong>苏州三大短板</strong>：月业绩环比(低于均值15.0pp)；商业开通率(低于均值9.2pp)；月业绩同比(低于均值7.5pp)。<br>
+<strong>核心矛盾</strong>：非B端开发效率持续领先（新签率第1、拉回率第2），但B端和商业端从开通到留存全面承压，结构性分化加剧。
+</div>
+</div>
+
+<script>
+function renderDeviationChart(domId, title, metrics, subtitle) {
+    var chart = echarts.init(document.getElementById(domId));
+    var items = metrics.map(function(m) {
+        var szPct = m.szVal * 100;
+        var avgPct = m.avgVal * 100;
+        var diff = szPct - avgPct;
+        return {
+            _name: m.name,
+            _szPct: szPct,
+            _avgPct: avgPct,
+            _diff: diff,
+            value: diff,
+            itemStyle: {
+                color: diff >= 0 ? '#2d9f2d' : '#e63946',
+                borderRadius: diff >= 0 ? [0, 4, 4, 0] : [4, 0, 0, 4]
+            },
+            label: {
+                show: true,
+                position: diff >= 0 ? 'right' : 'left',
+                formatter: (diff >= 0 ? '+' : '') + diff.toFixed(2) + 'pp',
+                fontSize: 11,
+                fontWeight: 600,
+                color: diff >= 0 ? '#2d9f2d' : '#e63946'
+            }
+        };
+    });
+    var rItems = items.slice().reverse();
+    var yLabels = rItems.map(function(it) { return it._name; });
+    chart.setOption({
+        title: {
+            text: title,
+            subtext: subtitle || '',
+            left: 'center',
+            textStyle: { fontSize: 14, color: '#4a5568' },
+            subtextStyle: { fontSize: 11, color: '#8795a8' }
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: { type: 'shadow' },
+            formatter: function(params) {
+                var it = params[0].data;
+                return '<b>' + it._name + '</b><br/>' +
+                    '苏州: ' + it._szPct.toFixed(2) + '%<br/>' +
+                    '9城均值: ' + it._avgPct.toFixed(2) + '%<br/>' +
+                    '偏差: <span style="color:' + (it._diff >= 0 ? '#2d9f2d' : '#e63946') + '">' +
+                    (it._diff >= 0 ? '+' : '') + it._diff.toFixed(2) + 'pp</span>';
+            }
+        },
+        grid: { left: 120, right: 80, bottom: 30, top: (subtitle ? 60 : 50) },
+        xAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: function(v) { return (v > 0 ? '+' : '') + v.toFixed(1) + 'pp'; }
+            },
+            splitLine: { lineStyle: { color: '#edf2f7' } }
+        },
+        yAxis: {
+            type: 'category',
+            data: yLabels,
+            axisLabel: { fontSize: 12, color: '#4a5568' }
+        },
+        series: [{
+            type: 'bar',
+            data: rItems,
+            barWidth: 22,
+            markLine: {
+                silent: true,
+                symbol: 'none',
+                lineStyle: { color: '#a0aec0', type: 'solid', width: 1 },
+                label: { show: false },
+                data: [{ xAxis: 0 }]
+            }
+        }]
+    });
+    return chart;
+}
+
+var c1 = renderDeviationChart('chart_achieve_dev',
+    '苏州业绩达成 vs 9城均值',
+    [{"name": "月达成率", "szVal": 0.87392, "avgVal": 0.8714110039812311}, {"name": "月业绩环比", "szVal": -0.441368038484572, "avgVal": -0.29121526766062666}, {"name": "月业绩同比", "szVal": -0.139555766693286, "avgVal": -0.06489895278330754}, {"name": "季达成率", "szVal": 0.942436340425532, "avgVal": 0.9275270290472}, {"name": "季环比", "szVal": 0.160245470277505, "avgVal": 0.17248806204366288}, {"name": "季同比", "szVal": -0.0898309345521275, "avgVal": -0.12180272522704606}, {"name": "年达成率", "szVal": 0.478226359499431, "avgVal": 0.46005648549248096}, {"name": "年同比", "szVal": -0.102997504163959, "avgVal": -0.11644520891572552}],
+    '偏差 = 苏州 - 均值（绿=优于均值，红=劣于均值）'
+);
+
+var c2 = renderDeviationChart('chart_open_dev',
+    '苏州开通率 vs 9城均值',
+    [{"name": "B开通率", "szVal": 0.111970590487861, "avgVal": 0.14621819087378835}, {"name": "非B开通率", "szVal": 0.666709412669915, "avgVal": 0.6178835374875502}, {"name": "住宅开通率", "szVal": 0.423169693530079, "avgVal": 0.45948415861798875}, {"name": "商业开通率", "szVal": 0.60017652250662, "avgVal": 0.6920703192953379}],
+    '偏差 = 苏州 - 均值（绿=优于均值，红=劣于均值）'
+);
+
+var c3 = renderDeviationChart('chart_member_dev',
+    '苏州会员环比 vs 9城均值',
+    [{"name": "总会员环比", "szVal": -0.016245753950672, "avgVal": -0.047827961364929034}, {"name": "B会员环比", "szVal": 0.0303030303030303, "avgVal": -0.03825441397924531}, {"name": "非B会员环比", "szVal": -0.0285874439461883, "avgVal": -0.04822801009098814}, {"name": "住宅会员环比", "szVal": -0.00300852415176333, "avgVal": -0.04387381619203445}, {"name": "商业会员环比", "szVal": -0.125964010282776, "avgVal": -0.08343696065266906}],
+    '偏差 = 苏州 - 均值｜环比为负值，偏差为正=苏州流失更少（优于均值），偏差为负=苏州流失更多（劣于均值）'
+);
+
+var c4 = renderDeviationChart('chart_renew_dev',
+    '苏州续费·拉回·新签 vs 9城均值',
+    [{"name": "总续费率", "szVal": 0.67741935483871, "avgVal": 0.656444640330166}, {"name": "B续费率", "szVal": 0.59047619047619, "avgVal": 0.6197641036998376}, {"name": "非B续费率", "szVal": 0.693951466859833, "avgVal": 0.6675736719838831}, {"name": "总拉回率", "szVal": 0.21133412042503, "avgVal": 0.17814889338874657}, {"name": "B拉回率", "szVal": 0.137221269296741, "avgVal": 0.12607996866557747}, {"name": "非B拉回率", "szVal": 0.25022502250225, "avgVal": 0.20080420264358523}, {"name": "总新签率", "szVal": 0.0633796422409879, "avgVal": 0.07000316791189809}, {"name": "B新签率", "szVal": 0.0222726781273651, "avgVal": 0.04856869728451044}, {"name": "非B新签率", "szVal": 0.27891156462585, "avgVal": 0.1730972653133127}],
+    '偏差 = 苏州 - 均值（绿=优于均值，红=劣于均值）'
+);
+
+window.addEventListener('resize', function() { [c1, c2, c3, c4].forEach(function(c) { c.resize(); }); });
+
+var sections = document.querySelectorAll('[id^="sec"]');
+var dots = document.querySelectorAll('.dot-nav a');
+window.addEventListener('scroll', function() {
+    var scrollPos = window.scrollY + 200;
+    sections.forEach(function(sec, i) {
+        if (sec.offsetTop <= scrollPos) {
+            dots.forEach(function(d) { d.classList.remove('active'); });
+            if (dots[i]) dots[i].classList.add('active');
+        }
+    });
+});
+</script>
+</body>
+</html>
